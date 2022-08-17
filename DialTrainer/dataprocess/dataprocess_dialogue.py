@@ -99,7 +99,7 @@ class DialogueDataProcess(DataProcessBase):
         if not os.path.exists(self.save_path):
             self.fit()
         dialogue_all = self.read_pkl(self.save_path)
-        dialogue_train, dialogue_val = dialogue_all["train"], dialogue_all["valid"]
+        dialogue_train, dialogue_val = dialogue_all["trainer"], dialogue_all["valid"]
         if to_dataset or to_dataloader:
             dialogue_train = DialogueDataset(dialogue_train, self.tokenizer, lm_labels=self.lm_labels)
             dialogue_val = DialogueDataset(dialogue_val, self.tokenizer, lm_labels=self.lm_labels)
@@ -126,8 +126,8 @@ class DialogueDataProcess(DataProcessBase):
         """ 返回含 input_ids, token_type_ids, lm_labels 的数据
 
         使用示例子:
-        train, val = xxx.load_dataloader()
-        for batch in train:
+        trainer, val = xxx.load_dataloader()
+        for batch in trainer:
             input_ids, token_type_ids, lm_labels = tuple(input_tensor.to(device) for input_tensor in batch)
 
         :param batch_size: 批次大小
@@ -168,7 +168,7 @@ class ChitDialogueDataProcess(DialogueDataProcess):
             dialogue_list.append(a_sample)
         dialogue_train = dialogue_list[val_num:]
         dialogue_val = dialogue_list[:val_num]
-        dialogue_all = {'train': dialogue_train, 'valid': dialogue_val}
+        dialogue_all = {'trainer': dialogue_train, 'valid': dialogue_val}
         self.save_to_pkl(dialogue_all, self.save_path)
 
 
